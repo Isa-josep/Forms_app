@@ -37,7 +37,7 @@ class _CubicCounterView extends StatelessWidget {
         body:  Center(
           child: BlocBuilder<CounterCubit, CounterState>(
             builder: (context, state) {
-              print("EL counter cambio");
+              //print("EL counter cambio");
               return Text("Counter value ${state.counter} ");
             },
           ),
