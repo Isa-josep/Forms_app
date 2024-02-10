@@ -25,7 +25,7 @@ class _RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<_RegisterView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String usarName ='';
+  String userName ='';
   String email='';
   String password='';
   @override
@@ -40,36 +40,68 @@ class _RegisterViewState extends State<_RegisterView> {
             children: [
               const FlutterLogo(size: 150),
               const SizedBox(height: 16.0),
+
                CustomTextFormField(
                 label: 'Nombre',
                 hint: 'Ingrese su nombre',
                 //errorMessage: 'El nombre es requerido',
-                validator: (value) => value!.isEmpty ? 'El nombre es requerido' : null,
+                validator: (value){
+                  if(value==null || value.isEmpty)return 'El nombre es requerido';
+                  if(value.trim().isEmpty) return 'El nombre no puede contener solo espacios';
+                  if(value.length<6) return 'El nombre debe tener al menos 6 caracteres';
+                  return null;
+                },
                 prefixIcon: const Icon(Icons.person),
                 obscureText: false,
+                onChanged: (value)=>userName=value,
               ),
+
               const SizedBox(height: 16.0),
+
               CustomTextFormField(
                 label: 'Correo',
                 hint: 'Ingrese su correo',
                 //errorMessage: 'El correo es requerido',
-                validator: (value) => value!.isEmpty ? 'El correo es requerido' : null,
+                validator: (value){
+                  if(value==null || value.isEmpty)return 'El nombre es requerido';
+                  if(value.trim().isEmpty) return 'El nombre no puede contener solo espacios';
+                  //? validacion de correo electronico con expresiones regulares
+                  final emailRegExp = RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  );
+                  if(!emailRegExp.hasMatch(value)) return 'El correo no es valido';
+                  return null;
+                },
                 prefixIcon: const Icon(Icons.email),
                 obscureText: false,
+                onChanged: (value)=>email=value,
               ),
+
               const SizedBox(height: 16.0),
+
               CustomTextFormField(
                 label: 'Contraseña',
                 hint: 'Ingrese su contraseña',
                 //errorMessage: 'La contraseña es requerida',
-                validator: (value) => value!.isEmpty ? 'La contraseña es requerida' : null,
+               validator: (value){
+                  if(value==null || value.isEmpty)return 'La contraseña es requerido';
+                  if(value.trim().isEmpty) return 'La contraseña no puede contener solo espacios';
+                  if(value.length<6) return 'La contraseña debe tener al menos 6 caracteres';
+                  return null;
+                },
                 prefixIcon: const Icon(Icons.lock),
                 obscureText: true,
+                onChanged: (value)=>password=value,
               ),
+
               const SizedBox(height: 16.0),
               FilledButton.tonalIcon(
                 icon: const Icon(Icons.save),
-                onPressed: (){}, 
+                onPressed: (){
+                 final bool isValid= _formKey.currentState!.validate();
+                 if(!isValid) return;
+                  print('$userName, $email, $password');
+                }, 
                 label: const Text('Register')
               )
             ],
