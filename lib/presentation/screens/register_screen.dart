@@ -100,7 +100,7 @@ class _RegisterViewState extends State<_RegisterView> {
                 onPressed: (){
                  final bool isValid= _formKey.currentState!.validate();
                  if(!isValid) return;
-                  print('$userName, $email, $password');
+                  //print('$userName, $email, $password');
                 }, 
                 label: const Text('Register')
               )
