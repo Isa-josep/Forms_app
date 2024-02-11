@@ -9,8 +9,9 @@ class Username extends FormzInput<String, UsernameError> {
   const Username.dirty(String value ) : super.dirty(value);
 
   String? get errorMessage{
-    if(error==UsernameError.empty) return 'El nombre es requerido';
-    if(error==UsernameError.length) return 'El nombre debe tener al menos 6 caracteres';
+    if(isValid || isPure) return null;
+    if(displayError== UsernameError.empty) return 'El nombre es requerido';
+    if(displayError== UsernameError.length) return 'El nombre debe tener al menos 6 caracteres'; 
     return null;
   }
 

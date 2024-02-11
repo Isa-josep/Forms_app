@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forms_app/infrastructure/inputs.dart';
 import 'package:forms_app/presentation/blocs/register/register_cubit.dart';
 import 'package:forms_app/presentation/widgets/widgest.dart';
 
@@ -77,20 +76,12 @@ class _RegisterView extends StatelessWidget {
               const SizedBox(height: 16.0),
 
               CustomTextFormField(
-                label: 'Contraseña',
+                label: 'Contraseña: ${password.value}',
                 hint: 'Ingrese su contraseña',
-                //errorMessage: 'La contraseña es requerida',
-               validator: (value){
-                  if(value==null || value.isEmpty)return 'La contraseña es requerido';
-                  if(value.trim().isEmpty) return 'La contraseña no puede contener solo espacios';
-                  if(value.length<6) return 'La contraseña debe tener al menos 6 caracteres';
-                  return null;
-                },
+                errorMessage: password.errorMessage,
                 prefixIcon: const Icon(Icons.lock),
                 obscureText: true,
-                onChanged: (value){
-                  registerCubit.passwordChanged(value);
-                },
+                onChanged: registerCubit.passwordChanged,
               ),
 
               const SizedBox(height: 16.0),
