@@ -47,13 +47,13 @@ class CustomTextFormField extends StatelessWidget {
         ),
 
         errorBorder: borde.copyWith(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.red,
           ),
         ),
 
         focusedErrorBorder: borde.copyWith(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.red,
           ),
         ),
