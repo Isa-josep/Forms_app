@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/infrastructure/inputs.dart';
 import 'package:forms_app/presentation/blocs/register/register_cubit.dart';
 import 'package:forms_app/presentation/widgets/widgest.dart';
 
@@ -20,27 +21,23 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class _RegisterView extends StatefulWidget {
+class _RegisterView extends StatelessWidget {
   const _RegisterView();
 
   @override
-  State<_RegisterView> createState() => _RegisterViewState();
-}
-
-class _RegisterViewState extends State<_RegisterView> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  
-  @override
   Widget build(BuildContext context) {
     final registerCubit=context.watch<RegisterCubit>();
+    final username= registerCubit.state.username;
+    final password= registerCubit.state.password;
+
     return  Form(
-      key: _formKey,
+
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
+
               const FlutterLogo(size: 150),
               const SizedBox(height: 16.0),
 
@@ -48,18 +45,10 @@ class _RegisterViewState extends State<_RegisterView> {
                 label: 'Nombre',
                 hint: 'Ingrese su nombre',
                 //errorMessage: 'El nombre es requerido',
-                validator: (value){
-                  if(value==null || value.isEmpty)return 'El nombre es requerido';
-                  if(value.trim().isEmpty) return 'El nombre no puede contener solo espacios';
-                  if(value.length<6) return 'El nombre debe tener al menos 6 caracteres';
-                  return null;
-                },
+                errorMessage: username.errorMessage,
                 prefixIcon: const Icon(Icons.person),
                 obscureText: false,
-                onChanged: (value){
-                  registerCubit.usarnameChanged(value);
-                  _formKey.currentState?.validate();
-                },
+                onChanged: registerCubit.usarnameChanged,
               ),
 
               const SizedBox(height: 16.0),
@@ -82,7 +71,6 @@ class _RegisterViewState extends State<_RegisterView> {
                 obscureText: false,
                 onChanged: (value){
                   registerCubit.emailChanged(value);
-                  _formKey.currentState?.validate();
                 },
               ),
 
@@ -102,7 +90,6 @@ class _RegisterViewState extends State<_RegisterView> {
                 obscureText: true,
                 onChanged: (value){
                   registerCubit.passwordChanged(value);
-                  _formKey.currentState?.validate();
                 },
               ),
 
@@ -110,9 +97,7 @@ class _RegisterViewState extends State<_RegisterView> {
               FilledButton.tonalIcon(
                 icon: const Icon(Icons.save),
                 onPressed: (){
-                //  final bool isValid= _formKey.currentState!.validate();
-                //  if(!isValid) return;
-                  //print('$userName, $email, $password');
+                
                   registerCubit.onSubmit();
                 }, 
                 label: const Text('Register')
