@@ -1,17 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:forms_app/infrastructure/inputs.dart';
+import 'package:formz/formz.dart';
 part 'register_state.dart';
 class RegisterCubit extends Cubit<RegisterFormState> {
   RegisterCubit() : super(const RegisterFormState());
 
   void onSubmit(){
-    //print('submit $state');
+    print('submit $state');
   }
 
   void usarnameChanged(String value){
+    final username =Username.dirty(value);
     emit(
       state.copyWith(
-        usarname: value,
+        username: username,
+        isValid: Formz.validate([username])
       )
     );
   }

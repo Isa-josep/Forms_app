@@ -110,8 +110,8 @@ class _RegisterViewState extends State<_RegisterView> {
               FilledButton.tonalIcon(
                 icon: const Icon(Icons.save),
                 onPressed: (){
-                 final bool isValid= _formKey.currentState!.validate();
-                 if(!isValid) return;
+                //  final bool isValid= _formKey.currentState!.validate();
+                //  if(!isValid) return;
                   //print('$userName, $email, $password');
                   registerCubit.onSubmit();
                 }, 
