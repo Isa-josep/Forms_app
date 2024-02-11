@@ -28,7 +28,7 @@ class _RegisterView extends StatelessWidget {
     final registerCubit=context.watch<RegisterCubit>();
     final username= registerCubit.state.username;
     final password= registerCubit.state.password;
-
+    final email=registerCubit.state.email;
     return  Form(
 
       child: Padding(
@@ -56,21 +56,12 @@ class _RegisterView extends StatelessWidget {
                 label: 'Correo',
                 hint: 'Ingrese su correo',
                 //errorMessage: 'El correo es requerido',
-                validator: (value){
-                  if(value==null || value.isEmpty)return 'El nombre es requerido';
-                  if(value.trim().isEmpty) return 'El nombre no puede contener solo espacios';
-                  //? validacion de correo electronico con expresiones regulares
-                  final emailRegExp = RegExp(
-                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                  );
-                  if(!emailRegExp.hasMatch(value)) return 'El correo no es valido';
-                  return null;
-                },
+                
                 prefixIcon: const Icon(Icons.email),
                 obscureText: false,
-                onChanged: (value){
-                  registerCubit.emailChanged(value);
-                },
+                onChanged: registerCubit.emailChanged,
+                errorMessage: email.errorMessage,
+
               ),
 
               const SizedBox(height: 16.0),
