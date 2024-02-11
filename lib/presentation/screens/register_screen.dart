@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/presentation/blocs/register/register_cubit.dart';
 import 'package:forms_app/presentation/widgets/widgest.dart';
+
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -10,8 +13,10 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Register'),
       ),
-      body: const _RegisterView(),
-      );
+      body: BlocProvider(
+        create: (context)=>RegisterCubit(), 
+        child: const _RegisterView(),
+      ));
   }
 }
 
@@ -25,12 +30,10 @@ class _RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<_RegisterView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String userName ='';
-  String email='';
-  String password='';
+  
   @override
   Widget build(BuildContext context) {
-    
+    final registerCubit=context.watch<RegisterCubit>();
     return  Form(
       key: _formKey,
       child: Padding(
@@ -53,7 +56,10 @@ class _RegisterViewState extends State<_RegisterView> {
                 },
                 prefixIcon: const Icon(Icons.person),
                 obscureText: false,
-                onChanged: (value)=>userName=value,
+                onChanged: (value){
+                  registerCubit.usarnameChanged(value);
+                  _formKey.currentState?.validate();
+                },
               ),
 
               const SizedBox(height: 16.0),
@@ -74,7 +80,10 @@ class _RegisterViewState extends State<_RegisterView> {
                 },
                 prefixIcon: const Icon(Icons.email),
                 obscureText: false,
-                onChanged: (value)=>email=value,
+                onChanged: (value){
+                  registerCubit.emailChanged(value);
+                  _formKey.currentState?.validate();
+                },
               ),
 
               const SizedBox(height: 16.0),
@@ -91,7 +100,10 @@ class _RegisterViewState extends State<_RegisterView> {
                 },
                 prefixIcon: const Icon(Icons.lock),
                 obscureText: true,
-                onChanged: (value)=>password=value,
+                onChanged: (value){
+                  registerCubit.passwordChanged(value);
+                  _formKey.currentState?.validate();
+                },
               ),
 
               const SizedBox(height: 16.0),
@@ -101,6 +113,7 @@ class _RegisterViewState extends State<_RegisterView> {
                  final bool isValid= _formKey.currentState!.validate();
                  if(!isValid) return;
                   //print('$userName, $email, $password');
+                  registerCubit.onSubmit();
                 }, 
                 label: const Text('Register')
               )
